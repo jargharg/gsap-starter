@@ -16,7 +16,7 @@ export default {
 	name: 'Animation1',
 	methods: {
 		startAnimation() {
-			TweenLite.to(window, 4, {
+			TweenLite.to(window, 2, {
 				scrollTo: "#end",
 				ease: Linear.easeNone,
 			});
