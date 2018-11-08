@@ -1,0 +1,13 @@
+// SCSS mixins go in here e.g. media queries, animations etc
+
+@mixin atMedium {
+    @media (min-width: 530px) {
+        @content;
+    }
+}
+
+@mixin belowMedium {
+    @media (max-width: 530px) {
+        @content;
+    }
+}
