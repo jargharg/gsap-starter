@@ -2,55 +2,68 @@
 	<section ref="container" class="animation__module">
 		<div ref="marker" class="animation__marker"></div>
 		<div class="animation__container">
-			<div ref="contentA" class="animation__content">A</div>
+			<div ref="contentA" class="animation__content" @click="startAnimation">A</div>
 			<div ref="contentB" class="animation__content">B</div>
 		</div>
 	</section>
 </template>
 
 <script>
-import { TimelineLite, Power2, Linear } from 'gsap';
+import { TimelineLite, Power2, Linear, TweenLite } from 'gsap';
+import scrollTo from 'gsap/ScrollToPlugin';
 
 export default {
 	name: 'Animation1',
+	methods: {
+		startAnimation() {
+			TweenLite.to(window, 4, {
+				scrollTo: "#end",
+				ease: Linear.easeNone,
+			});
+		},
+	},
 	mounted() {
 		const { contentA: A, contentB: B, container, marker } = this.$refs;
+		const length = 4;
+		const sectionLength = length / 4;
+		this.container = container;
 
 		this.marker = new TimelineLite({
 			paused: true,
-		}).from(marker, 1, {
-			x: '-100%',
+		}).from(marker, length, {
+			opacity: '0',
 			ease: Linear.easeNone,
 		});
 
 		this.timeline = new TimelineLite({
 			paused: true,
 		})
-			.to(A, 1, {
+			.to(A, sectionLength, {
 				x: '-100%',
 				rotation: -360,
-				ease: Power2.easeOut,
+				ease: Power2.easeInOut,
 			})
-			.to(A, 1, {
+			.to(A, sectionLength, {
 				x: '0%',
 				rotation: 360,
 				ease: Power2.easeIn,
 			})
-			.to(B, 1, {
+			.to(B, sectionLength, {
 				x: '100%',
 				rotation: 360,
 				ease: Power2.easeOut,
 			})
-			.to(B, 1, {
+			.to(B, sectionLength, {
 				x: '0%',
 				rotation: -360,
-				ease: Power2.easeIn,
+				ease: Power2.easeInOut,
 			});
 
 		window.addEventListener('scroll', () => {
 			const st = document.documentElement.scrollTop;
-			const ht = container.scrollHeight - st;
+			const ht = container.scrollHeight;
 			const windowScroll = st / ht;
+			
 			this.marker.progress(windowScroll);
 			this.timeline.progress(windowScroll);
 		});
@@ -61,7 +74,6 @@ export default {
 <style scoped lang="scss">
 .animation {
 	&__module {
-		background: gainsboro;
 		height: 200vh;
 	}
 
@@ -97,7 +109,10 @@ export default {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		cursor: pointer;
+
+		&:nth-child(1) {
+			cursor: pointer;
+		}
 	}
 }
 </style>
