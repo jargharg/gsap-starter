@@ -1,15 +1,28 @@
 <template>
-	<div id="app">
-		<router-view />
-	</div>
+	<section id="app" class="app">
+		<Animation1 />
+		<div id="end"></div>
+	</section>
 </template>
 
-<style lang="scss">
-@import '@/styles/main.scss';
+<script>
+import { TimelineLite, Power2 } from 'gsap';
+import Animation1 from '@/components/Animation1';
 
-#app {
-	text-align: center;
-	height: 100%;
-	width: 100%;
+export default {
+	name: 'App',
+	components: { Animation1 },
+};
+</script>
+
+<style lang="scss">
+@import '/styles/main.scss';
+
+.app {
+	background: gainsboro;
+}
+
+#end {
+	height: 100vh;
 }
 </style>
