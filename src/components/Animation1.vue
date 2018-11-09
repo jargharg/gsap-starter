@@ -1,5 +1,5 @@
 <template>
-	<section ref="container" class="animation__module">
+	<section ref="moduleElement" class="animation__module">
 		<div ref="marker" class="animation__marker"></div>
 		<div class="animation__container">
 			<div ref="contentA" class="animation__content" @click="startAnimation">A</div>
@@ -9,24 +9,23 @@
 </template>
 
 <script>
-import { TimelineLite, Power2, Linear, TweenLite } from 'gsap';
-import scrollTo from 'gsap/ScrollToPlugin';
+require('gsap/ScrollToPlugin');
+import { TimelineLite, Power2, Linear, TweenLite } from 'gsap/all';
 
 export default {
 	name: 'Animation1',
 	methods: {
 		startAnimation() {
-			TweenLite.to(window, 2, {
-				scrollTo: "#end",
+			TweenLite.to(document.documentElement, 2, {
+				scrollTo: '#end',
 				ease: Linear.easeNone,
 			});
 		},
 	},
 	mounted() {
-		const { contentA: A, contentB: B, container, marker } = this.$refs;
+		const { contentA: A, contentB: B, moduleElement, marker } = this.$refs;
 		const length = 4;
 		const sectionLength = length / 4;
-		this.container = container;
 
 		this.marker = new TimelineLite({
 			paused: true,
@@ -61,9 +60,9 @@ export default {
 
 		window.addEventListener('scroll', () => {
 			const st = document.documentElement.scrollTop;
-			const ht = container.scrollHeight;
+			const ht = moduleElement.scrollHeight;
 			const windowScroll = st / ht;
-			
+
 			this.marker.progress(windowScroll);
 			this.timeline.progress(windowScroll);
 		});
@@ -75,40 +74,41 @@ export default {
 .animation {
 	&__module {
 		height: 200vh;
-	}
-
-	&__marker {
-		position: fixed;
-		top: 0;
-		left: 0;
-		height: 100vh;
-		width: 100vw;
-		background: $secondary-color;
-		text-align: right;
-		padding-right: 1em;
+		overflow: hidden;
 	}
 
 	&__container {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
+		align-items: center;
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		height: 100vh;
 		justify-content: center;
+		left: 0;
+		position: fixed;
+		top: 0;
+		width: 100vw;
+	}
+
+	&__marker {
+		background: $secondary-color;
+		height: 100vh;
+		left: 0;
+		padding-right: 1em;
+		position: fixed;
+		text-align: right;
+		top: 0;
+		width: 100vw;
 	}
 
 	&__content {
-		border-radius: 50%;
-		height: 20vw;
-		width: 20vw;
+		align-items: center;
 		background: $primary-color;
+		border-radius: 50%;
 		color: white;
 		display: flex;
+		height: 20vw;
 		justify-content: center;
-		align-items: center;
+		width: 20vw;
 
 		&:nth-child(1) {
 			cursor: pointer;
