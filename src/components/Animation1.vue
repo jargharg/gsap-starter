@@ -11,6 +11,7 @@
 <script>
 require('gsap/ScrollToPlugin');
 import { TimelineLite, Power2, Linear, TweenLite } from 'gsap/all';
+import ScrollListener from '@/services/ScrollListener';
 
 export default {
 	name: 'Animation1',
@@ -58,11 +59,10 @@ export default {
 				ease: Power2.easeInOut,
 			});
 
-		window.addEventListener('scroll', () => {
-			const st = document.documentElement.scrollTop;
-			const ht = moduleElement.scrollHeight;
-			const windowScroll = st / ht;
+		const ht = moduleElement.scrollHeight;
 
+		ScrollListener.addAction((scrollY) => {
+			const windowScroll = scrollY / ht;
 			this.marker.progress(windowScroll);
 			this.timeline.progress(windowScroll);
 		});
