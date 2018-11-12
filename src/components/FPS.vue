@@ -11,15 +11,12 @@ export default {
 		return { fps: 0 };
 	},
 	mounted() {
-		const fps = 0;
 		const times = [];
 
 		const refreshLoop = () => {
 			window.requestAnimationFrame(() => {
 				const now = performance.now();
-				while (times.length > 0 && times[0] <= now - 1000) {
-					times.shift();
-				}
+				while (times.length > 0 && times[0] <= now - 1000) times.shift();
 				times.push(now);
 				this.fps = times.length;
 				refreshLoop();
