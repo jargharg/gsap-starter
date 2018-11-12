@@ -2,16 +2,18 @@
 	<section id="app" class="app">
 		<Animation1 />
 		<div id="end"></div>
+		<FPS />
 	</section>
 </template>
 
 <script>
 import { TimelineLite, Power2 } from 'gsap';
 import Animation1 from '@/components/Animation1';
+import FPS from '@/components/FPS';
 
 export default {
 	name: 'App',
-	components: { Animation1 },
+	components: { Animation1, FPS },
 };
 </script>
 
