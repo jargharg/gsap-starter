@@ -1,6 +1,5 @@
 class ScrollListener {
-	constructor(action) {
-		this.action = action;
+	constructor() {
 		this.lastScrollY = 0;
 		this.ticking = false;
 		this.actions = [];
