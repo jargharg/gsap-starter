@@ -1,9 +1,9 @@
 <template>
-	<section ref="moduleElement" class="animation__module">
+	<section class="animation__module">
 		<div class="animation__container">
 			<div ref="background" class="animation__background"></div>
-			<div ref="contentA" class="animation__content" @click="startAnimation">A</div>
-			<div ref="contentB" class="animation__content">B</div>
+			<div ref="ballA" class="animation__ball" @click="runAnimation">A</div>
+			<div ref="ballB" class="animation__ball">B</div>
 		</div>
 	</section>
 </template>
@@ -11,64 +11,76 @@
 <script>
 require('gsap/ScrollToPlugin');
 import { TimelineLite, Power2, Linear, TweenLite } from 'gsap/all';
-import ScrollListener from '@/services/ScrollListener';
+import ScrollListener from '../services/ScrollListener';
 
 export default {
 	name: 'Animation1',
+	data() {
+		const animationLength = 1;
+
+		return {
+			length: animationLength,
+			l4: animationLength / 4,
+		};
+	},
 	methods: {
-		startAnimation() {
+		runAnimation() {
 			TweenLite.to(document.documentElement, 2, {
-				scrollTo: '#end',
+				scrollTo: this.elementTop + this.scrollTimeline,
 				ease: Linear.easeNone,
 			});
 		},
+		setBackgroundTimeline() {
+			const { background } = this.$refs;
+
+			this.background = new TimelineLite({
+				paused: true,
+			}).from(background, this.length, {
+				opacity: '0',
+				ease: Linear.easeNone,
+			});
+		},
+		setBallsTimeline() {
+			const { ballA: A, ballB: B } = this.$refs;
+
+			this.balls = new TimelineLite({
+				paused: true,
+			})
+				.to(A, this.l4, {
+					x: '-100%',
+					rotation: -360,
+					ease: Power2.easeInOut,
+				})
+				.to(A, this.l4, {
+					x: '0%',
+					rotation: 360,
+					ease: Power2.easeIn,
+				})
+				.to(B, this.l4, {
+					x: '100%',
+					rotation: 360,
+					ease: Power2.easeOut,
+				})
+				.to(B, this.l4, {
+					x: '0%',
+					rotation: -360,
+					ease: Power2.easeInOut,
+				});
+		},
 	},
 	mounted() {
-		const { contentA: A, contentB: B, moduleElement, background } = this.$refs;
-		const length = 4;
-		const sectionLength = length / 4;
+		this.elementTop = this.$el.offsetTop;
+		this.scrollTimeline = this.$el.scrollHeight - window.innerHeight;
 
-		this.background = new TimelineLite({
-			paused: true,
-		}).from(background, length, {
-			opacity: '0',
-			ease: Linear.easeNone,
-		});
-
-		this.timeline = new TimelineLite({
-			paused: true,
-		})
-			.to(A, sectionLength, {
-				x: '-100%',
-				rotation: -360,
-				ease: Power2.easeInOut,
-			})
-			.to(A, sectionLength, {
-				x: '0%',
-				rotation: 360,
-				ease: Power2.easeIn,
-			})
-			.to(B, sectionLength, {
-				x: '100%',
-				rotation: 360,
-				ease: Power2.easeOut,
-			})
-			.to(B, sectionLength, {
-				x: '0%',
-				rotation: -360,
-				ease: Power2.easeInOut,
-			});
-
-		const scrollTimeline = moduleElement.scrollHeight - window.innerHeight;
-		const elementTop = this.$el.offsetTop;
+		this.setBackgroundTimeline();
+		this.setBallsTimeline();
 
 		ScrollListener.addAction({
-			startHeight: elementTop,
-			endHeight: elementTop + scrollTimeline,
-			action: scrollY => {
-				const windowScroll = (scrollY - elementTop) / scrollTimeline;
-				this.background.progress(windowScroll);
-				this.timeline.progress(windowScroll);
+			startHeight: this.elementTop,
+			endHeight: this.elementTop + this.scrollTimeline,
+			action: progress => {
+				this.background.progress(progress);
+				this.balls.progress(progress);
 			},
 		});
 	},
@@ -103,7 +115,7 @@ export default {
 		width: 100vw;
 	}
 
-	&__content {
+	&__ball {
 		align-items: center;
 		background: $primary-color;
 		border-radius: 50%;
