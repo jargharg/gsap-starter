@@ -36,7 +36,7 @@ export default {
 			this.background = new TimelineLite({
 				paused: true,
 			}).from(background, this.length, {
-				opacity: '0',
+				autoAlpha: 0,
 				ease: Linear.easeNone,
 			});
 		},
