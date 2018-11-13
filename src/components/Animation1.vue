@@ -1,7 +1,7 @@
 <template>
 	<section ref="moduleElement" class="animation__module">
-		<div ref="marker" class="animation__marker"></div>
 		<div class="animation__container">
+			<div ref="background" class="animation__background"></div>
 			<div ref="contentA" class="animation__content" @click="startAnimation">A</div>
 			<div ref="contentB" class="animation__content">B</div>
 		</div>
@@ -24,13 +24,13 @@ export default {
 		},
 	},
 	mounted() {
-		const { contentA: A, contentB: B, moduleElement, marker } = this.$refs;
+		const { contentA: A, contentB: B, moduleElement, background } = this.$refs;
 		const length = 4;
 		const sectionLength = length / 4;
 
-		this.marker = new TimelineLite({
+		this.background = new TimelineLite({
 			paused: true,
-		}).from(marker, length, {
+		}).from(background, length, {
 			opacity: '0',
 			ease: Linear.easeNone,
 		});
@@ -67,7 +67,7 @@ export default {
 			endHeight: elementTop + scrollTimeline,
 			action: scrollY => {
 				const windowScroll = (scrollY - elementTop) / scrollTimeline;
-				this.marker.progress(windowScroll);
+				this.background.progress(windowScroll);
 				this.timeline.progress(windowScroll);
 			},
 		});
@@ -92,12 +92,12 @@ export default {
 		width: 100%;
 	}
 
-	&__marker {
+	&__background {
 		background: $secondary-color;
 		height: 100vh;
 		left: 0;
 		padding-right: 1em;
-		position: fixed;
+		position: absolute;
 		text-align: right;
 		top: 0;
 		width: 100vw;
@@ -112,6 +112,7 @@ export default {
 		height: 20vw;
 		justify-content: center;
 		width: 20vw;
+		z-index: 2;
 
 		&:nth-child(1) {
 			cursor: pointer;
