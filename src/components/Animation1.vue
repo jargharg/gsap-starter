@@ -76,8 +76,8 @@ export default {
 		this.setBallsTimeline();
 
 		ScrollListener.addAction({
-			startHeight: this.elementTop,
-			endHeight: this.elementTop + this.scrollTimeline,
+			startY: this.elementTop,
+			endY: this.elementTop + this.scrollTimeline,
 			action: progress => {
 				this.background.progress(progress);
 				this.balls.progress(progress);
