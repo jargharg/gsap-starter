@@ -1,7 +1,9 @@
 <template>
 	<section id="app" class="app">
 		<Animation1 />
-		<div id="end"></div>
+		<div id="end">
+			FIN
+		</div>
 		<FPS />
 	</section>
 </template>
@@ -26,5 +28,10 @@ export default {
 
 #end {
 	height: 100vh;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	color: $secondary-color;
+	font-size: 3em;
 }
 </style>
