@@ -59,12 +59,17 @@ export default {
 				ease: Power2.easeInOut,
 			});
 
-		const ht = moduleElement.scrollHeight;
+		const scrollTimeline = moduleElement.scrollHeight - window.innerHeight;
+		const elementTop = this.$el.offsetTop;
 
-		ScrollListener.addAction((scrollY) => {
-			const windowScroll = scrollY / ht;
-			this.marker.progress(windowScroll);
-			this.timeline.progress(windowScroll);
+		ScrollListener.addAction({
+			startHeight: elementTop,
+			endHeight: elementTop + scrollTimeline,
+			action: scrollY => {
+				const windowScroll = (scrollY - elementTop) / scrollTimeline;
+				this.marker.progress(windowScroll);
+				this.timeline.progress(windowScroll);
+			},
 		});
 	},
 };
@@ -74,7 +79,6 @@ export default {
 .animation {
 	&__module {
 		height: 200vh;
-		overflow: hidden;
 	}
 
 	&__container {
@@ -83,10 +87,9 @@ export default {
 		flex-direction: row;
 		height: 100vh;
 		justify-content: center;
-		left: 0;
-		position: fixed;
+		position: sticky;
 		top: 0;
-		width: 100vw;
+		width: 100%;
 	}
 
 	&__marker {
