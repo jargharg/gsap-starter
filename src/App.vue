@@ -1,6 +1,10 @@
 <template>
 	<section id="app" class="app">
 		<Animation1 />
+		<Animation1 />
+		<Animation1 />
+		<Animation1 />
+		<Animation1 />
 		<div id="end">
 			FIN
 		</div>
