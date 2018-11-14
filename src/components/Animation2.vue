@@ -1,12 +1,14 @@
 <template>
-	<svg xmlns="http://www.w3.org/2000/svg" :width="width" height="50px">
+	<section class="container">
+		<svg xmlns="http://www.w3.org/2000/svg" :width="width" height="50px">
 
-		<pattern id="sinePattern" x="0" y="0" :width="1 / (width + 50) * 50" height="1">
-			<path ref="sine" fill="none" stroke="#262626" stroke-width="2"></path>
-		</pattern>
+			<pattern id="sinePattern" x="0" y="0" :width="1 / (width + 50) * 50" height="1">
+				<path ref="sine" fill="none" stroke="#262626" stroke-width="2"></path>
+			</pattern>
 
-		<rect ref="sinePattern" class="sine" fill="url(#sinePattern)" :width="width + 50" height="50" />
-	</svg>
+			<rect ref="sinePattern" class="sine" fill="url(#sinePattern)" :width="width + 50" height="50" />
+		</svg>
+	</section>
 </template>
 
 <script>
@@ -51,4 +53,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 </style>
