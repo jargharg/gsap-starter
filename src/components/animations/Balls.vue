@@ -2,7 +2,7 @@
 	<section class="animation__module">
 		<div class="animation__container">
 			<div ref="background" class="animation__background"></div>
-			<div ref="ballA" class="animation__ball" @click="runAnimation">A</div>
+			<div ref="ballA" class="animation__ball animation__ball--controller" @click="runAnimation">A</div>
 			<div ref="ballB" class="animation__ball">B</div>
 		</div>
 	</section>
@@ -11,16 +11,17 @@
 <script>
 require('gsap/ScrollToPlugin');
 import { TimelineLite, Power2, Linear, TweenLite } from 'gsap/all';
-import ScrollListener from '../services/ScrollListener';
+import ScrollListener from '@/services/ScrollListener';
 
 export default {
-	name: 'Animation1',
+	name: 'Balls',
 	data() {
 		const animationLength = 1;
 
 		return {
 			length: animationLength,
 			l4: animationLength / 4,
+			l2: animationLength / 2,
 		};
 	},
 	methods: {
@@ -32,13 +33,19 @@ export default {
 		},
 		setBackgroundTimeline() {
 			const { background } = this.$refs;
+			const easing = { ease: Power2.easeInOut };
 
 			this.background = new TimelineLite({
 				paused: true,
-			}).from(background, this.length, {
-				autoAlpha: 0,
-				ease: Linear.easeNone,
-			});
+			})
+				.to(background, this.l2, {
+					autoAlpha: 1,
+					...easing,
+				})
+				.to(background, this.l2, {
+					autoAlpha: 0,
+					...easing,
+				});
 		},
 		setBallsTimeline() {
 			const { ballA: A, ballB: B } = this.$refs;
@@ -78,7 +85,7 @@ export default {
 		ScrollListener.addAction({
 			startY: this.elementTop,
 			endY: this.elementTop + this.scrollTimeline,
-			action: progress => {
+			action: (progress) => {
 				this.background.progress(progress);
 				this.balls.progress(progress);
 			},
@@ -113,6 +120,7 @@ export default {
 		text-align: right;
 		top: 0;
 		width: 100vw;
+		opacity: 0;
 	}
 
 	&__ball {
@@ -125,8 +133,9 @@ export default {
 		justify-content: center;
 		width: 20vw;
 		z-index: 2;
+		font-size: 1.5em;
 
-		&:nth-child(1) {
+		&--controller {
 			cursor: pointer;
 		}
 	}

@@ -1,14 +1,8 @@
 <template>
 	<section id="app" class="app">
-		<Animation1 />
-		<Animation2 :width="200" />
-		<Animation1 />
-		<Animation2 :width="200" />
-		<Animation1 />
-		<Animation2 :width="200" />
-		<Animation1 />
-		<Animation2 :width="200" />
-		<Animation1 />
+		<Balls />
+		<Wave :width="200" />
+		<Balls />
 		<div id="end">
 			FIN
 		</div>
@@ -17,13 +11,13 @@
 </template>
 
 <script>
-import Animation1 from '@/components/Animation1';
-import Animation2 from '@/components/Animation2';
+import Balls from '@/components/animations/Balls';
+import Wave from '@/components/animations/Wave';
 import FPS from '@/components/FPS';
 
 export default {
 	name: 'App',
-	components: { Animation1, Animation2, FPS },
+	components: { Balls, Wave, FPS },
 	data() {
 		return {
 			screenWidth: document.body.offsetWidth,
