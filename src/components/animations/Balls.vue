@@ -10,7 +10,7 @@
 
 <script>
 require('gsap/ScrollToPlugin');
-import { TimelineLite, Power2, Linear, TweenLite } from 'gsap/all';
+import { TimelineLite, Power2, Linear, TweenLite } from 'gsap';
 import ScrollListener from '@/services/ScrollListener';
 
 export default {
@@ -21,7 +21,6 @@ export default {
 		return {
 			length: animationLength,
 			l4: animationLength / 4,
-			l2: animationLength / 2,
 		};
 	},
 	methods: {
@@ -33,19 +32,11 @@ export default {
 		},
 		setBackgroundTimeline() {
 			const { background } = this.$refs;
-			const easing = { ease: Power2.easeInOut };
 
-			this.background = new TimelineLite({
-				paused: true,
-			})
-				.to(background, this.l2, {
-					autoAlpha: 1,
-					...easing,
-				})
-				.to(background, this.l2, {
-					autoAlpha: 0,
-					...easing,
-				});
+			this.background = TweenLite.to(background, this.length, {
+				autoAlpha: 1,
+				ease: Linear.easeNone,
+			}).paused(true);
 		},
 		setBallsTimeline() {
 			const { ballA: A, ballB: B } = this.$refs;
@@ -85,7 +76,7 @@ export default {
 		ScrollListener.addAction({
 			startY: this.elementTop,
 			endY: this.elementTop + this.scrollTimeline,
-			action: (progress) => {
+			action: progress => {
 				this.background.progress(progress);
 				this.balls.progress(progress);
 			},
@@ -133,7 +124,6 @@ export default {
 		justify-content: center;
 		width: 20vw;
 		z-index: 2;
-		font-size: 1.5em;
 
 		&--controller {
 			cursor: pointer;

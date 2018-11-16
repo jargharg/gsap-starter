@@ -1,7 +1,7 @@
 <template>
 	<section id="app" class="app">
 		<Balls />
-		<Wave :width="200" />
+		<Wave :width="200" :stroke="'yellow'" />
 		<Balls />
 		<div id="end">
 			FIN
@@ -30,7 +30,7 @@ export default {
 @import '/styles/main.scss';
 
 .app {
-	background: gainsboro;
+	background: rgb(9, 5, 60);
 }
 
 #end {
