@@ -9,7 +9,7 @@ class ScrollListener {
 
 			if (this.lastScrollY >= action.startY && this.lastScrollY <= action.endY) {
 				const progress = (this.lastScrollY - action.startY) / action.distanceY;
-				action.action(progress);
+				action.actionToProgress(progress);
 			}
 		}
 
@@ -31,9 +31,9 @@ class ScrollListener {
 	/**
 	 * Add an action to the scroll listener
 	 * @param {Object} action
-	 * @param {Function} action.action The action to call with a parameter of progress between start (0) and end (1)
 	 * @param {Number} action.startY The Y coordinate at which to start calling the action
-	 * @param {Number} action.endY The Y coordinate at which to stop calling the action
+	 * @param {Number=} action.endY The Y coordinate at which to stop calling the action
+	 * @param {Function=} action.actionToProgress The action to call with a parameter of progress between start (0) and end (1)
 	 */
 	addAction(action) {
 		action.distanceY = action.endY - action.startY;

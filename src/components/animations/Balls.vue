@@ -1,7 +1,6 @@
 <template>
 	<section class="animation__module">
 		<div class="animation__container">
-			<div ref="background" class="animation__background"></div>
 			<div ref="ballA" class="animation__ball animation__ball--controller" @click="runAnimation">A</div>
 			<div ref="ballB" class="animation__ball">B</div>
 		</div>
@@ -10,7 +9,7 @@
 
 <script>
 require('gsap/ScrollToPlugin');
-import { TimelineLite, Power2, Linear, TweenLite } from 'gsap';
+import { TimelineLite, Power2, Linear, Bounce, TweenLite } from 'gsap';
 import ScrollListener from '@/services/ScrollListener';
 
 export default {
@@ -30,13 +29,16 @@ export default {
 				ease: Linear.easeNone,
 			});
 		},
-		setBackgroundTimeline() {
-			const { background } = this.$refs;
+		setBallsEntryAnimation() {
+			const { ballA: A, ballB: B } = this.$refs;
+			const ease = Bounce.easeOut;
+			const { offsetHeight } = document.documentElement;
+			const animationVars = {
+				y: -offsetHeight,
+				ease,
+			};
 
-			this.background = TweenLite.to(background, this.length, {
-				autoAlpha: 1,
-				ease: Linear.easeNone,
-			}).paused(true);
+			new TimelineLite().from(A, 2, animationVars).from(B, 2, animationVars, '-=2');
 		},
 		setBallsTimeline() {
 			const { ballA: A, ballB: B } = this.$refs;
@@ -70,14 +72,13 @@ export default {
 		this.elementTop = this.$el.offsetTop;
 		this.scrollTimeline = this.$el.scrollHeight - window.innerHeight;
 
-		this.setBackgroundTimeline();
 		this.setBallsTimeline();
+		this.setBallsEntryAnimation();
 
 		ScrollListener.addAction({
 			startY: this.elementTop,
 			endY: this.elementTop + this.scrollTimeline,
-			action: progress => {
-				this.background.progress(progress);
+			actionToProgress: (progress) => {
 				this.balls.progress(progress);
 			},
 		});
@@ -100,18 +101,6 @@ export default {
 		position: sticky;
 		top: 0;
 		width: 100%;
-	}
-
-	&__background {
-		background: $secondary-color;
-		height: 100vh;
-		left: 0;
-		padding-right: 1em;
-		position: absolute;
-		text-align: right;
-		top: 0;
-		width: 100vw;
-		opacity: 0;
 	}
 
 	&__ball {

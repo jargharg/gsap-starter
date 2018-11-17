@@ -1,8 +1,8 @@
 <template>
 	<section id="app" class="app">
 		<Balls />
-		<Wave :width="200" :stroke="'yellow'" />
-		<Balls />
+		<Wave :width="200" />
+		<Squares />
 		<div id="end">
 			FIN
 		</div>
@@ -12,12 +12,13 @@
 
 <script>
 import Balls from '@/components/animations/Balls';
+import Squares from '@/components/animations/Squares';
 import Wave from '@/components/animations/Wave';
 import FPS from '@/components/FPS';
 
 export default {
 	name: 'App',
-	components: { Balls, Wave, FPS },
+	components: { Balls, Wave, Squares, FPS },
 	data() {
 		return {
 			screenWidth: document.body.offsetWidth,
@@ -30,7 +31,7 @@ export default {
 @import '/styles/main.scss';
 
 .app {
-	background: rgb(9, 5, 60);
+	background: $bg-gradient;
 }
 
 #end {
@@ -38,7 +39,7 @@ export default {
 	justify-content: center;
 	align-items: center;
 	display: flex;
-	color: $secondary-color;
+	color: $primary-color;
 	font-size: 3em;
 }
 </style>

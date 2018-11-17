@@ -2,7 +2,7 @@
 	<section class="sine__module">
 		<svg class="sine__pattern" xmlns="http://www.w3.org/2000/svg" :width="width" height="50">
 			<pattern id="sinePattern" x="0" y="0" :width="1 / (width + xOffset) * 50" height="1">
-				<path class="sine__element" :style='{stroke: stroke}' :d="sineWaveData"></path>
+				<path class="sine__element" :d="sineWaveData"></path>
 			</pattern>
 
 			<rect ref="sineWave" class="sine__wave" fill="url(#sinePattern)" :width="width + xOffset" height="50" />
@@ -18,7 +18,6 @@ export default {
 	name: 'Wave',
 	props: {
 		width: Number,
-		stroke: String,
 	},
 	data() {
 		const height = 100;
@@ -61,9 +60,8 @@ export default {
 		ScrollListener.addAction({
 			startY: this.elementTop,
 			endY: this.elementTop + this.scrollTimeline,
-			action: progress => {
+			actionToProgress: (progress) => {
 				this.sineAnimation.progress(progress);
-				console.log('sine firing');
 			},
 		});
 	},
@@ -81,20 +79,8 @@ export default {
 
 	&__element {
 		stroke-width: 4;
+		stroke: $primary-color;
 		fill: none;
-	}
-
-	&__wave {
-		// animation: scrollLeft 0.5s infinite linear;
-	}
-}
-
-@keyframes scrollLeft {
-	0% {
-		transform: translateX(-50px);
-	}
-	100% {
-		transform: translateX(0);
 	}
 }
 </style>

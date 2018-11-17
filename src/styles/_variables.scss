@@ -1,5 +1,8 @@
 // SCSS variables go in here e.g. primary colour, fonts, animation times etc
 
-$primary-color: hotpink;
-$secondary-color: yellow;
-$font-stack: 'Avenir', Helvetica, Arial, sans-serif;
+$primary-color: #ff0054;
+$secondary-color: #1b998b;
+$bg-primary-color: #095256;
+$bg-secondary-color: #437c90;
+$bg-gradient: linear-gradient($bg-primary-color, $bg-secondary-color);
+$font-stack: 'Avenir', Helvetica, sans-serif;
