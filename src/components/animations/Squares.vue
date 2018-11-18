@@ -104,10 +104,11 @@ export default {
 		display: flex;
 		height: 25%;
 		justify-content: center;
-		width: 25%;
-		z-index: 2;
 		position: relative;
 		transition: 0.2s all;
+		user-select: none;
+		width: 25%;
+		z-index: 2;
 
 		&:hover {
 			opacity: 0.9;
