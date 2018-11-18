@@ -2,7 +2,7 @@
 	<section class="animation__module">
 		<div class="animation__container">
 			<div class="animation__square__container">
-				<div class="animation__square" v-for="(square, index) in squares" :key="index" :ref="`square${index}`" @click='toggleSmall(square)' :class="{'animation__square--small': square.small}">
+				<div class="animation__square" v-for="(square, index) in squares" :key="index" :ref="`square${index}`" @click='toggleSmall(square)'>
 					{{index + 1}}
 				</div>
 			</div>
@@ -25,24 +25,29 @@ export default {
 	methods: {
 		toggleSmall(square) {
 			square.small = !square.small;
-			square.small ? square.clickAnimation.play() : square.clickAnimation.reverse();
+			square.small ? square.clickTween.play() : square.clickTween.reverse();
 		},
 		setSquareTweens() {
 			const { offsetHeight, offsetWidth } = document.documentElement;
+			const tweens = [];
 
 			this.squares.forEach((square) => {
-				square.positionAnimation = TweenLite.from(square.ref, 1, {
+				const positionTween = TweenLite.from(square.ref, 1, {
 					x: (Math.random() * offsetWidth) / 1.3 - offsetWidth / 2.6,
 					y: (Math.random() * offsetHeight) / 1.3 - offsetHeight / 2.6,
 					scale: Math.random() + 0.2,
 					ease: Power2.easeInOut,
-				}).paused(true);
+				});
 
-				square.clickAnimation = TweenLite.to(square.ref, 0.1, {
+				tweens.push(positionTween);
+
+				square.clickTween = TweenLite.to(square.ref, 0.1, {
 					scale: 0.5,
 					ease: Power2.easeInOut,
 				}).paused(true);
 			});
+
+			return tweens;
 		},
 	},
 	mounted() {
@@ -50,18 +55,24 @@ export default {
 			square.ref = this.$refs[`square${index}`];
 		});
 
+		const squareTweens = this.setSquareTweens();
+
+		this.masterTimeline = new TimelineLite({ paused: true }).add('start');
+
+		squareTweens.forEach((squareTween) => {
+			this.masterTimeline.add(squareTween, 'start');
+		});
+
+		this.masterTimeline.to(document, 0.3, {}); // add delay at end
+
 		this.elementTop = this.$el.offsetTop;
 		this.scrollTimeline = this.$el.scrollHeight - window.innerHeight;
-
-		this.setSquareTweens();
 
 		ScrollListener.addAction({
 			startY: this.elementTop,
 			endY: this.elementTop + this.scrollTimeline,
 			actionToProgress: (progress) => {
-				this.squares.forEach((square) => {
-					square.positionAnimation.progress(progress);
-				});
+				this.masterTimeline.progress(progress);
 			},
 		});
 	},
