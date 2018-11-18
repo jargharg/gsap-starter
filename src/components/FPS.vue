@@ -36,8 +36,8 @@ export default {
 	padding: 0.5em;
 	transform: rotate(0.01deg);
 	z-index: 999999;
-	background: white;
-	color: black;
+	background: rgba(0, 0, 0, 0.1);
+	color: white;
 	font-family: monospace;
 }
 </style>
