@@ -25,7 +25,7 @@ export default {
 
 			this.rows.forEach((row, index) => {
 				const tween = TweenLite.from(row.ref, 1, {
-                    x: index % 2 === 0 ? offsetWidth : -offsetWidth,
+					x: index % 2 === 0 ? offsetWidth : -offsetWidth,
 					ease: Linear.easeNone,
 				});
 
@@ -51,11 +51,13 @@ export default {
 
 		const rowTweens = this.setRowTweens();
 
-		this.masterTimeline = new TimelineLite({ paused: true });
+		this.masterTimeline = new TimelineLite({ paused: true }).to(document, 0.2, {});
 
 		rowTweens.forEach((rowTween) => {
 			this.masterTimeline.add(rowTween);
 		});
+
+		this.masterTimeline.to(document, 0.2, {});
 
 		this.elementTop = this.$el.offsetTop;
 		this.scrollTimeline = this.$el.scrollHeight - window.innerHeight;
@@ -85,8 +87,8 @@ export default {
 		justify-content: center;
 		position: sticky;
 		top: 0;
-        overflow: hidden;
-        width: 100%;
+		overflow: hidden;
+		width: 100%;
 	}
 
 	&__row {
