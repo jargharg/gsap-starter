@@ -24,8 +24,8 @@ export default {
 	},
 	methods: {
 		runAnimation() {
-			TweenLite.to(document.documentElement, 2, {
-				scrollTo: this.elementTop + this.scrollTimeline,
+			TweenLite.to(document.documentElement, 12, {
+				scrollTo: '#end',
 				ease: Linear.easeNone,
 			});
 		},
