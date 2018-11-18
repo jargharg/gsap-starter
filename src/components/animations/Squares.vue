@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { TweenLite, Power2, Back } from 'gsap';
+import { TweenLite, Power2 } from 'gsap';
 import ScrollListener from '@/services/ScrollListener';
 
 export default {
@@ -27,7 +27,7 @@ export default {
 			square.small = !square.small;
 			square.small ? square.clickAnimation.play() : square.clickAnimation.reverse();
 		},
-		setSquaresTimeline() {
+		setSquareTweens() {
 			const { offsetHeight, offsetWidth } = document.documentElement;
 
 			this.squares.forEach((square) => {
@@ -38,9 +38,9 @@ export default {
 					ease: Power2.easeInOut,
 				}).paused(true);
 
-				square.clickAnimation = TweenLite.to(square.ref, 0.6, {
+				square.clickAnimation = TweenLite.to(square.ref, 0.1, {
 					scale: 0.5,
-					ease: Back.easeInOut,
+					ease: Power2.easeInOut,
 				}).paused(true);
 			});
 		},
@@ -53,7 +53,7 @@ export default {
 		this.elementTop = this.$el.offsetTop;
 		this.scrollTimeline = this.$el.scrollHeight - window.innerHeight;
 
-		this.setSquaresTimeline();
+		this.setSquareTweens();
 
 		ScrollListener.addAction({
 			startY: this.elementTop,
@@ -79,6 +79,7 @@ export default {
 		display: flex;
 		height: 100vh;
 		justify-content: center;
+		overflow: hidden;
 		position: sticky;
 		top: 0;
 		width: 100%;
@@ -102,7 +103,6 @@ export default {
 		}
 
 		&__container {
-			position: relative;
 			height: 50vh;
 			max-height: 50vw;
 			width: 50vh;

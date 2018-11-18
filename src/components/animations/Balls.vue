@@ -98,6 +98,7 @@ export default {
 		flex-direction: row;
 		height: 100vh;
 		justify-content: center;
+		overflow: hidden;
 		position: sticky;
 		top: 0;
 		width: 100%;

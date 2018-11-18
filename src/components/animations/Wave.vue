@@ -60,7 +60,7 @@ export default {
 		ScrollListener.addAction({
 			startY: this.elementTop,
 			endY: this.elementTop + this.scrollTimeline,
-			actionToProgress: (progress) => {
+			actionToProgress: (progress) => {				
 				this.sineAnimation.progress(progress);
 			},
 		});
